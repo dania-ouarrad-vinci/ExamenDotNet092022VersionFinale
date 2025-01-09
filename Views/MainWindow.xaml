@@ -1,0 +1,72 @@
+﻿<Window x:Class="ExamenSeptembre202309.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExamenSeptembre202309"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <DataTemplate x:Key="listboxTemplate">
+            <StackPanel Orientation="Horizontal">
+                <!-- id du produit -->
+                <TextBlock Text="{Binding ProductId}"/>
+                <!-- nom du produit -->
+                <TextBlock Text="{Binding ProductName}"/>
+            </StackPanel>
+        </DataTemplate>
+
+
+        <!-- Style pour les champs en lecture seule -->
+        <Style x:Key="ReadOnlyTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="Background" Value="#F0F0F0" />
+            <Setter Property="IsReadOnly" Value="True" />
+        </Style>
+    </Window.Resources>
+    
+    
+    <Grid>
+        <ListBox Name="lbxProduct" ItemsSource="{Binding ProductsList}" ItemTemplate="{StaticResource listboxTemplate}"  SelectedItem="{Binding SelectedProduct}" Margin="73,32,474,264"/>
+
+        <!-- Section centrale : Détails du produit (2) -->
+        <Grid Margin="60,187,344,61" DataContext="{Binding SelectedItem, ElementName=lbxProduct}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <!-- Libellé -->
+                <ColumnDefinition Width="*" />
+                <!-- Valeur -->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="ProductID:" FontWeight="Bold" Grid.Row="0" Grid.Column="0" Margin="5" />
+            <TextBox Text="{Binding ProductId, Mode=OneWay}" 
+                     Style="{StaticResource ReadOnlyTextBoxStyle}" 
+                     Grid.Row="0" Grid.Column="1" Margin="5" />
+
+            <TextBlock Text="ProductName:" FontWeight="Bold" Grid.Row="1" Grid.Column="0" Margin="5" />
+            <TextBox Text="{Binding ProductName}" 
+                     Grid.Row="1" Grid.Column="1" Margin="5" />
+
+            <TextBlock Text="SupplierContactName:" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Margin="5" />
+            <TextBox Text="{Binding ContactName, Mode=OneWay}" 
+                     Style="{StaticResource ReadOnlyTextBoxStyle}" 
+                     Grid.Row="2" Grid.Column="1" Margin="5" />
+
+            <TextBlock Text="QuantityPerUnit:" FontWeight="Bold" Grid.Row="3" Grid.Column="0" Margin="5" />
+            <TextBox Text="{Binding QuantityPerUnit}" 
+                     Grid.Row="3" Grid.Column="1" Margin="5" />
+
+            <Button Content="Maj" Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"  Width="100" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="5" />
+        </Grid>
+        <ListBox ItemsSource="{Binding SalesList}" Margin="512,5,23,229"/>
+
+    </Grid>
+</Window>
